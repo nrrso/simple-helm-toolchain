@@ -9,39 +9,39 @@ template:
   header: '![](toolchain.svg?localize)'
   icon: secure-lock-helm.svg
   required:
-    - build
-    - repo
+    - aidminutes-build
+    - aidminutes-repo
   info:
     git url: >-
-      [https://github.com/open-toolchain/simple-helm-toolchain](https://github.com/open-toolchain/simple-helm-toolchain)
+      [https://github.com/nrrso/simple-helm-toolchain](https://github.com/nrrso/simple-helm-toolchain)
     git branch: >-
-      [master](https://github.com/open-toolchain/simple-helm-toolchain/tree/master)
+      [master](https://github.com/nrrso/simple-helm-toolchain/tree/master)
 toolchain:
-  name: 'helm-toolchain-{{timestamp}}'
+  name: 'aidminutes-toolchain-{{timestamp}}'
   template:
     getting_started:
       $ref: "#/messages/template.gettingStarted" 
 services:
-  repo:
-    service_id: hostedgit
+  aidminutes-repo:
+    service_id: githubpublic
     parameters:
-      repo_name: 'hello-helm-{{timestamp}}'
-      repo_url: 'https://github.com/open-toolchain/hello-helm'
-      type: clone
+      repo_name: 'aidminutes-helm-{{timestamp}}'
+      repo_url: 'https://github.com/aidminutes/ibm-aidminutes-test'
+      type: link
       has_issues: true
       enable_traceability: true
-  build:
+  aidminutes-build:
     service_id: pipeline
     parameters:
       services:
-        - repo
-      name: 'hello-helm-{{timestamp}}'
+        - aidminutes-repo
+      name: 'aidminutes-helm-{{timestamp}}'
       ui-pipeline: true
       configuration:
         content:
           $text: pipeline.yml
         env:
-          GIT_REPO: repo
+          GIT_REPO: aidminutes-repo
           CF_APP_NAME: '{{form.pipeline.parameters.app-name}}'
           REGISTRY_REGION_ID: '{{form.pipeline.parameters.registry-region}}'
           REGISTRY_NAMESPACE: '{{form.pipeline.parameters.registry-namespace}}'
